@@ -63,9 +63,7 @@ module.exports = {
     })
   },
   getMedicalDetail (req, res) {
-    console.log(111)
     pool.getConnection((err, connection) => {
-      console.log(222)
       connection.query($sql.queryById, +req.body.id, (err, result) => {
         jsonWrite(res, err, result[0])
       })
@@ -83,9 +81,11 @@ module.exports = {
         req.body.medicalType,
         req.body.outCount
       ]
+      console.log(req.body, data, 111)
       connection.query($sql.medicalOut, data, (err, result) => {
         console.log(err, result)
       })
+      console.log(req.body.outCount, 222)
       connection.query($sql.setMedicalOut, [
         req.body.count,
         req.body.outDate,

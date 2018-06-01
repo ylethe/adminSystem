@@ -13,6 +13,8 @@ var taskRouter = require('./routes/task');
 var medicalRouter = require('./routes/medical');
 var customerRouter = require('./routes/customer');
 
+const qnconfig = require('./operation/upload/config.js');
+
 var app = express();
 
 // view engine setup
@@ -47,6 +49,16 @@ app.use('/task', taskRouter);
 app.use('/medical', medicalRouter);
 app.use('/customer', customerRouter);
 
+//七牛云
+app.get('/token', (req, res, next) => {
+  // console.log(qnconfig.uploadToken)
+  res.status(200).json({
+    code: 0,
+    data: qnconfig.uploadToken,
+    msg: ''
+  })
+
+})
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

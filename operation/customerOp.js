@@ -24,16 +24,19 @@ module.exports = {
     pool.getConnection((err, connection) => {
       let sqlName = ''
       let data = []
+      const lifePhoto = req.body.lifePhoto || ''
+
       if (req.body.id) {
         sqlName = 'update'
         data = [
-         req.body.name,
-         req.body.medicalNo,
-         req.body.producotor,
-         req.body.productionDate,
-         req.body.medicalType,
-         req.body.count,
-         req.body.comment,
+          req.body.name,
+          req.body.name,
+          req.body.sex,
+          req.body.tel,
+          req.body.address,
+          req.body.birthday,
+          req.body.comment,
+          `${lifePhoto}`
          +req.body.id
         ]
       } else {
@@ -41,19 +44,18 @@ module.exports = {
         data = [
           null,
           req.body.name,
-          req.body.medicalNo,
-          req.body.producotor,
-          req.body.productionDate,
-          null,
-          req.body.medicalType,
-          req.body.count,
-          null,
-          null,
-          req.body.comment
+          req.body.sex,
+          req.body.tel,
+          req.body.address,
+          req.body.birthday,
+          req.body.comment,
+          lifePhoto
         ]
       }
+      console.log(req.body, data, 555)
       // 建立连接，向表中插入／更新值
       connection.query($sql[sqlName], data, (err, result) => {
+        console.log(err, result, 444)
         jsonWrite(res, err, result);
         // 释放连接
         connection.release();

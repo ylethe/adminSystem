@@ -54,6 +54,8 @@ module.exports = {
     pool.getConnection((err, connection) => {
       let sqlName = ''
       let data = []
+      const comment = req.body.comment || '3242'
+      const lifePhoto = req.body.lifePhoto || ''
       if (req.body.id) {
         sqlName = 'update'
         data = [
@@ -70,7 +72,7 @@ module.exports = {
       } else {
         sqlName = 'insert'
         data = [
-          req.body.id,
+          null,
           req.body.userName,
           req.body.password,
           req.body.tel,
@@ -78,11 +80,12 @@ module.exports = {
           req.body.sex,
           req.body.idCard,
           req.body.joinDate,
-          req.body.comment,
-          req.body.lifePhoto,
-          req.body.isAdmin
+          `${comment}`,
+          `${lifePhoto}`,
+          0
         ]
       }
+      console.log($sql[sqlName], 333)
       // 建立连接，向表中插入／更新值
       connection.query($sql[sqlName], data, (err, result) => {
         jsonWrite(res, err, result);
@@ -90,7 +93,6 @@ module.exports = {
         connection.release();
       });
     });
-    return useIdCount;
   },
   // 获取员工列表
   getStaffList (req, res) {
@@ -111,7 +113,7 @@ module.exports = {
   // 设置管理员
   setAdmin (req, res) {
     pool.getConnection((err, connection) => {
-      connection.query($sql.setAdmin, [1, +req.body.id], (err, result) => {
+      connection.query($sql.setAdmin, [1, '123456' +req.body.id], (err, result) => {
         jsonWrite(res, err, result);
       })
     })
